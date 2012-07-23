@@ -9,7 +9,7 @@ var options = {
 
 var Pagin = pagin.create(options);
 
-describe('pagin.find()', function () {
+describe('pagin', function () {
 
   describe('.list()', function () {
     it('should find all documents with "*"', function (done) {
@@ -110,8 +110,45 @@ describe('pagin.find()', function () {
       })
     })
 
-    // it('should mutate with options.fn', function (done) {
-    //   
-    // })
+    it('should mutate with options.fn', function (done) {
+      var prefix = 'successfully mutated';
+      function fn(content) {
+        return prefix + content.toString()
+      }
+
+      Pagin.find({
+        name: 'hoge'
+      , fn: fn
+      }, function (err, results) {
+        if (err) return done(err)
+        expect(results).to.have.length(1)
+        expect(results[0].content).to.be.ok()
+        var str = results[0].content.toString();
+        expect(str.slice(0, prefix.length)).to.eql(prefix)
+        done()
+      })
+    })
+
+    it('should mutate asynchronouslly with options.fn arity 2', function (done) {
+      var prefix = 'successfully mutated';
+      function fn(content, done) {
+        var ret = prefix + content.toString();
+        process.nextTick(function () {
+          done(null, ret);
+        });
+      }
+
+      Pagin.find({
+        name: 'hoge'
+      , fn: fn
+      }, function (err, results) {
+        if (err) return done(err)
+        expect(results).to.have.length(1)
+        expect(results[0].content).to.be.ok()
+        var str = results[0].content.toString();
+        expect(str.slice(0, prefix.length)).to.eql(prefix)
+        done()
+      })
+    })
   })
 })
