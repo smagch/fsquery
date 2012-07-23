@@ -1,0 +1,15 @@
+{
+  "name": "pagin",
+  "version": "0.0.0",
+  "dependencies": {
+    "debug": "~0.7",
+    "glob": "3.x",
+    "underscore": "~1.3",
+    "async": "~0.1"
+  },
+  "devDependencies": {
+    "marked": "*",
+    "expect.js": "*",
+    "mocha": "~1.3"
+  }
+}
