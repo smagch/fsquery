@@ -151,4 +151,40 @@ describe('pagin', function () {
       })
     })
   })
+
+  describe('.findOnly()', function () {
+    it('should fail with multiple results', function (done) {
+      Pagin.findOnly('*', function (err, results) {
+        expect(err).to.be.ok()
+        done()
+      })
+    })
+
+    it('should be able to find by name', function (done) {
+      Pagin.findOnly('hoge', function (err, result) {
+        if (err) return done(err)
+        expect(result).to.be.ok()
+        expect(result.content).to.be.ok()
+        done()
+      })
+    })
+
+    it('should be able to query with date month', function (done) {
+      Pagin.findOnly({date: '2011-01'}, function (err, result) {
+        if (err) return done(err)
+        expect(result).to.be.ok()
+        expect(result.content).to.be.ok()
+        done()
+      })
+    })
+
+    it('should be able to query with date string', function (done) {
+      Pagin.findOnly({date: '2011-02-02'}, function (err, result) {
+        if (err) return done(err)
+        expect(result).to.be.ok()
+        expect(result.content).to.be.ok()
+        done()
+      })
+    })
+  })
 })
