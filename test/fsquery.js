@@ -19,7 +19,8 @@ describe('fsQuery', function () {
       .children()
       .get(function (err, results) {
         if (err) return done(err)
-        expect(results).to.have.length(6);
+        expect(results).to.be.ok()
+        expect(results).to.have.length(6)
         done()
       })
     })
@@ -29,8 +30,9 @@ describe('fsQuery', function () {
       .children()
       .children()
       .get(function (err, results) {
-        if (err) return done(err);
-        expect(results).to.have.length(6);
+        if (err) return done(err)
+        expect(results).to.be.ok()
+        expect(results).to.have.length(6)
         done()
       })
     })
@@ -41,8 +43,9 @@ describe('fsQuery', function () {
       .children()
       .children()
       .get(function (err, results) {
-        if (err) return done(err);
-        expect(results).to.have.length(3);
+        if (err) return done(err)
+        expect(results).to.be.ok()
+        expect(results).to.have.length(3)
         done()
       })
     })
@@ -53,6 +56,7 @@ describe('fsQuery', function () {
         .children(':file')
         .get(function (err, results) {
           if (err) return done(err)
+          expect(results).to.be.ok()
           expect(results).to.have.length(3)
           var basenames = results.map(function (result) {
             return path.basename(result)
@@ -61,12 +65,13 @@ describe('fsQuery', function () {
           done()
         })
       })
-    
+
       it('should return only directory with :dir', function (done) {
         fsQuery(testDir)
         .children(':dir')
         .get(function (err, results) {
           if (err) done(err)
+          expect(results).to.be.ok()
           expect(results).to.have.length(3)
           var basenames = results.map(function (result) {
             return path.basename(result)
@@ -85,6 +90,7 @@ describe('fsQuery', function () {
       .filter(':dir')
       .get(function (err, results) {
         if (err) return done(err)
+        expect(results).to.be.ok()
         expect(results).to.have.length(3)
         var basenames = results.map(function (result) {
           return path.basename(result)
@@ -100,12 +106,42 @@ describe('fsQuery', function () {
       .filter(':file')
       .get(function (err, results) {
         if (err) return done(err)
+        expect(results).to.be.ok()
         expect(results).to.have.length(3)
         var basenames = results.map(function (results) {
           return path.basename(results)
         })
         expect(basenames).to.eql(['hoge1.txt', 'hoge2.txt', 'hoge3.txt'])
         done()
+      })
+    })
+
+    describe('with minimatch', function () {
+      it('should return minimatched files', function (done) {
+        fsQuery(testDir)
+        .children()
+        .filter('hoge1*')
+        .get(function (err, results) {
+          if (err) return done(err)
+          expect(results).to.be.ok()
+          expect(results).to.have.length(2)
+          done()
+        })
+      })
+    })
+
+    describe('with both minimatch and filter', function () {
+      it('should success', function (done) {
+        fsQuery(testDir)
+        .children()
+        .filter('hoge2*:file')
+        .get(function (err, results) {
+          if (err) return done(err)
+          expect(results).to.be.ok()
+          expect(results).to.have.length(1)
+          expect(path.basename(results[0])).to.eql('hoge2.txt')
+          done()
+        })
       })
     })
   })
