@@ -8,14 +8,14 @@ describe('fsQuery', function () {
 
   describe('(options)', function () {
     it('should return FsQuery Object', function (done) {
-      expect(fsQuery({})).to.be.a(FsQuery)
+      expect(fsQuery()).to.be.a(FsQuery)
       done()
     })
   })
 
   describe('.children()', function () {
     it("should success", function (done) {
-      fsQuery({cwd: testDir})
+      fsQuery(testDir)
       .children()
       .get(function (err, results) {
         if (err) return done(err)
@@ -25,7 +25,7 @@ describe('fsQuery', function () {
     })
 
     it('should be able to do recursively', function (done) {
-      fsQuery({cwd: testDir})
+      fsQuery(testDir)
       .children()
       .children()
       .get(function (err, results) {
@@ -36,7 +36,7 @@ describe('fsQuery', function () {
     })
 
     it('should be able to do triple recursively', function (done) {
-      fsQuery({cwd: testDir})
+      fsQuery(testDir)
       .children()
       .children()
       .children()
@@ -47,39 +47,71 @@ describe('fsQuery', function () {
       })
     })
 
-    describe('with :', function () {
-      it('should return only file with :file', function (done) {
-        fsQuery({cwd: testDir})
-        .children(':file')
-        .get(function (err, results) {
-          if (err) return done(err)
-          expect(results).to.have.length(3)
-          var basenames = results.map(function (result) {
-            return path.basename(result)
-          })
-          expect(basenames).to.eql(['hoge1.txt', 'hoge2.txt', 'hoge3.txt'])
-          done()
-        })
-      })
-
-      it('should return only directory with :dir', function (done) {
-        fsQuery(testDir)
-        .children(':dir')
-        .get(function (err, results) {
-          if (err) done(err)
-          expect(results).to.have.length(3)
-          var basenames = results.map(function (result) {
-            return path.basename(result)
-          })
-          expect(basenames).to.eql(['hoge1', 'hoge2', 'hoge3'])
-          done()
-        })
-      })
-    })
+    // describe('with :', function () {
+    //   it('should return only file with :file', function (done) {
+    //     fsQuery(testDir)
+    //     .children(':file')
+    //     .get(function (err, results) {
+    //       if (err) return done(err)
+    //       expect(results).to.have.length(3)
+    //       var basenames = results.map(function (result) {
+    //         return path.basename(result)
+    //       })
+    //       expect(basenames).to.eql(['hoge1.txt', 'hoge2.txt', 'hoge3.txt'])
+    //       done()
+    //     })
+    //   })
+    // 
+    //   it('should return only directory with :dir', function (done) {
+    //     fsQuery(testDir)
+    //     .children(':dir')
+    //     .get(function (err, results) {
+    //       if (err) done(err)
+    //       expect(results).to.have.length(3)
+    //       var basenames = results.map(function (result) {
+    //         return path.basename(result)
+    //       })
+    //       expect(basenames).to.eql(['hoge1', 'hoge2', 'hoge3'])
+    //       done()
+    //     })
+    //   })
+    // })
 
     // describe('with selector', function () {
     //   it('should ')
     // })
+  })
+
+  describe('.filter()', function () {
+    it('should filter directories with :dir', function (done) {
+      fsQuery(testDir)
+      .children()
+      .filter(':dir')
+      .get(function (err, results) {
+        if (err) return done(err)
+        expect(results).to.have.length(3)
+        var basenames = results.map(function (result) {
+          return path.basename(result)
+        })
+        expect(basenames).to.eql(['hoge1', 'hoge2', 'hoge3'])
+        done()
+      })
+    })
+
+    it('should filter files with :file', function (done) {
+      fsQuery(testDir)
+      .children()
+      .filter(':file')
+      .get(function (err, results) {
+        if (err) return done(err)
+        expect(results).to.have.length(3)
+        var basenames = results.map(function (results) {
+          return path.basename(results)
+        })
+        expect(basenames).to.eql(['hoge1.txt', 'hoge2.txt', 'hoge3.txt'])
+        done()
+      })
+    })
   })
 
   // describe('.parent()', function () {
