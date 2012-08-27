@@ -47,39 +47,35 @@ describe('fsQuery', function () {
       })
     })
 
-    // describe('with :', function () {
-    //   it('should return only file with :file', function (done) {
-    //     fsQuery(testDir)
-    //     .children(':file')
-    //     .get(function (err, results) {
-    //       if (err) return done(err)
-    //       expect(results).to.have.length(3)
-    //       var basenames = results.map(function (result) {
-    //         return path.basename(result)
-    //       })
-    //       expect(basenames).to.eql(['hoge1.txt', 'hoge2.txt', 'hoge3.txt'])
-    //       done()
-    //     })
-    //   })
-    // 
-    //   it('should return only directory with :dir', function (done) {
-    //     fsQuery(testDir)
-    //     .children(':dir')
-    //     .get(function (err, results) {
-    //       if (err) done(err)
-    //       expect(results).to.have.length(3)
-    //       var basenames = results.map(function (result) {
-    //         return path.basename(result)
-    //       })
-    //       expect(basenames).to.eql(['hoge1', 'hoge2', 'hoge3'])
-    //       done()
-    //     })
-    //   })
-    // })
-
-    // describe('with selector', function () {
-    //   it('should ')
-    // })
+    describe('with :', function () {
+      it('should return only file with :file', function (done) {
+        fsQuery(testDir)
+        .children(':file')
+        .get(function (err, results) {
+          if (err) return done(err)
+          expect(results).to.have.length(3)
+          var basenames = results.map(function (result) {
+            return path.basename(result)
+          })
+          expect(basenames).to.eql(['hoge1.txt', 'hoge2.txt', 'hoge3.txt'])
+          done()
+        })
+      })
+    
+      it('should return only directory with :dir', function (done) {
+        fsQuery(testDir)
+        .children(':dir')
+        .get(function (err, results) {
+          if (err) done(err)
+          expect(results).to.have.length(3)
+          var basenames = results.map(function (result) {
+            return path.basename(result)
+          })
+          expect(basenames).to.eql(['hoge1', 'hoge2', 'hoge3'])
+          done()
+        })
+      })
+    })
   })
 
   describe('.filter()', function () {
