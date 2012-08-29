@@ -163,6 +163,23 @@ describe('fsQuery', function () {
     })
   })
 
+  describe('.map()', function () {
+    it('should success', function (done) {
+      fsQuery(testDir)
+      .children()
+      .map(function (name, done) {
+        process.nextTick(function () {
+          done(null, path.basename(name));
+        });
+      })
+      .get(function (err, results) {
+        if (err) return done(err);
+        expect(results).to.be.ok();
+        expect(results).to.eql(['hoge1', 'hoge1.txt', 'hoge2', 'hoge2.txt', 'hoge3', 'hoge3.txt']);
+        done();
+      });
+    })
+  })
   // describe('.parent()', function () {
   //   
   // })
