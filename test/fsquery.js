@@ -146,6 +146,23 @@ describe('fsQuery', function () {
     })
   })
 
+  describe('.each()', function () {
+    it('should success', function (done) {
+      var filenames = [];
+      fsQuery(testDir)
+      .children()
+      .each(function (name, done) {
+        filenames.push(name);
+        process.nextTick(done);
+      })
+      .get(function (err, results) {
+        if (err) return done(err);
+        expect(filenames).to.have.length(6);
+        done();
+      })
+    })
+  })
+
   // describe('.parent()', function () {
   //   
   // })
