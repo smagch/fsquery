@@ -179,6 +179,39 @@ describe('fsQuery', function () {
         done();
       });
     })
+
+    it('should step synchronously', function (done) {
+      fsQuery(testDir).children(':dir')
+      .map(function (filename, next) {
+        process.nextTick(function () {
+          next(null, path.basename(filename))
+        }) 
+      })
+      .map(function (filename, next) {
+        process.nextTick(function () {
+          next(null, filename + '-h')
+        })
+      })
+      .map(function (filename, next) {
+        process.nextTick(function () {
+          next(null, filename + 'el')
+        })
+      })
+      .map(function (filename, next) {
+        process.nextTick(function () {
+          next(null, filename + 'lo')
+        })
+      })
+      .get(function (err, results) {
+        if (err) return done(err)
+        expect(results).to.be.ok()
+        expect(results).to.have.length(3)
+        expect(results).to.eql(['hoge1-hello', 'hoge2-hello', 'hoge3-hello']);
+        done()
+      })
+    })
+  })
+
   })
   // describe('.parent()', function () {
   //   
