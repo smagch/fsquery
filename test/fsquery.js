@@ -210,6 +210,20 @@ describe('fsQuery', function () {
         done()
       })
     })
+
+    it('should works synchronousely with arity 1', function (done) {
+      fsQuery(testDir).children(':file')
+      .map(function (filename) {
+        return path.basename(filename, '.txt') + '.poo'
+      })
+      .get(function (err, results) {
+        if (err) return done(err)
+        expect(results).to.be.ok()
+        expect(results).to.have.length(3)
+        expect(results).to.eql(['hoge1.poo', 'hoge2.poo', 'hoge3.poo'])
+        done()
+      })
+    })
   })
 
   describe('.sortBy()', function () {
