@@ -1,4 +1,4 @@
-var fsQuery = require('../lib/fsquery')
+var fsQuery = require('../')
   , FsQuery = fsQuery.FsQuery
   , path = require('path')
   , expect = require('expect.js')

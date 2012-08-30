@@ -1,5 +1,5 @@
 {
-  "name": "pagin",
+  "name": "fsquery",
   "version": "0.0.0",
   "dependencies": {
     "debug": "~0.7",
