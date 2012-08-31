@@ -264,6 +264,27 @@ describe('fsQuery', function () {
     })
   })
 
+  describe('.groupBy()', function () {
+    it('should group string key string', function (done) {
+      fsQuery(testDir).children()
+      .map(function (filename) {
+        return {
+          ext: path.extname(filename) || 'none',
+          name: path.basename(filename, '.txt')
+        };
+      })
+      .groupBy('ext')
+      .get(function (err, results) {
+        if (err) return done(err)
+        expect(results).to.be.ok()
+        expect(results).to.only.have.keys('.txt', 'none')
+        expect(results['.txt']).to.have.length(3)
+        expect(results['none']).to.have.length(3)
+        done()
+      })
+    })
+  })
+
   // describe('.parent()', function () {
   //   
   // })
