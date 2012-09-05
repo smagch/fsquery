@@ -1,5 +1,7 @@
 # Traverse file systems in a jQuery-like way
 
+Don't use this module. It really sucks.
+
 ```
 + /tmp
   + hoge
@@ -23,3 +25,10 @@ fsQuery('/tmp').childern(':dir')
     // results = ['hello-hoge', 'hello-foo', 'hello-bar']
   });
 ```
+
+```javascript
+
+## TODO
+
+* don't use `.once()`
+* `.error()`
